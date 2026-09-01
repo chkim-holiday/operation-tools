@@ -13,7 +13,9 @@ services:
     volumes:
       - ${HOME}/bags:/workspace/bags
       - ./ros2_rmw_config:/etc/ros2:ro
-      - ./scripts/record_topics.sh:/workspace/bags/record_topics.sh:ro
+      - ./scripts/record_topics.sh:/usr/local/bin/record_topics.sh:ro
+      - ./scripts/sync_bags.sh:/usr/local/bin/sync_bags.sh:ro
+      - ${HOME}/.ssh:/root/.ssh:ro # sync_bags.sh가 컨테이너 안에서 호스트 SSH 키를 쓰기 위함
     network_mode: host
     ipc: host
     stdin_open: true

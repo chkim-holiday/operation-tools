@@ -2,4 +2,8 @@ FROM ros:jazzy-ros-base
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         ros-jazzy-rmw-cyclonedds-cpp \
+        openssh-client \
+        rsync \
     && rm -rf /var/lib/apt/lists/*
+
+RUN echo 'source /opt/ros/jazzy/setup.bash' >> /root/.bashrc
