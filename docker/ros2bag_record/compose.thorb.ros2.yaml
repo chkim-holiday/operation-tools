@@ -1,0 +1,26 @@
+services:
+  rosbag:
+    image: cr.hday.io/rosbag:arm64-v0.1
+    build:
+      context: .
+      dockerfile: Dockerfile.ros2bag_record
+    platform: ${TARGETPLATFORM:-linux/arm64}
+    container_name: holiday-rosbag-arm64
+    environment:
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID:-138}
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+      - CYCLONEDDS_URI=/etc/ros2/${CYCLONEDDS_CONFIG:-cyclonedds.thorb.xml}
+    volumes:
+      - ${HOME}/bags:/workspace/bags
+      - ./ros2_rmw_config:/etc/ros2:ro
+      - ./scripts/record_topics.sh:/workspace/bags/record_topics.sh:ro
+    network_mode: host
+    ipc: host
+    stdin_open: true
+    tty: true
+    init: true
+    stop_signal: SIGINT
+    stop_grace_period: 15s
+    working_dir: /workspace/bags
+    # 컨테이너는 대기만 하고, 녹화는 exec로 들어가서 record_topics.sh 실행
+    command: sleep infinity
